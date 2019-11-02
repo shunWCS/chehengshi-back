@@ -1,0 +1,67 @@
+#startup
+server:
+    port: 443
+    ssl:
+      key-store: classpath:my_https.pfx
+      key-store-password: yV2jhe8O
+      key-store-type: PKCS12
+#Spring
+spring:
+    jpa:
+      hibernate:
+        ddl-auto: update
+        naming:
+          implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+          strategy: org.hibernate.cfg.ImprovedNamingStrategy
+      show-sql: true
+    application:
+         name: che_heng_shi
+#profile
+    profiles:
+        active: uat
+#datasource
+    datasource:
+        # druid
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        filters: stat
+        maxActive: 20
+        initialSize: 1
+        maxWait: 60000
+        minIdle: 1
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+    jmx:
+      default-domain: che_heng_shi
+    http:
+      multipart:
+        max-file-size: 1000Mb
+        max-request-size: 10000MB
+
+#mybatis
+mybatis:
+    mapper-locations: classpath:com/dingguan/**/**.xml
+    type-aliases-package: classpath:com.dingguan.**.entity
+    configuration:
+      map-underscore-to-camel-case: true
+
+#log
+logging:
+    config: classpath:logback.xml
+oss:
+  fileUploadUrl: http://xcxfile.chehengshi.com/fileUpload/
+  endpoint: oss-cn-shenzhen.aliyuncs.com
+  accessKeyId: LTAI4FrxEusd1jafGcFuaoPa
+  accessKeySecret: tZytWyQOd8dKccW38zOBC4kgqJlTZF
+  bucketName: xcxossfile
+
+
+
+

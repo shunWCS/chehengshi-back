@@ -1,0 +1,18 @@
+spring:
+  datasource:
+     name: dev
+     url: jdbc:mysql://localhost:3306/che_heng_shi?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+     username: root
+     password: 123456
+
+wechatPay:
+    appid: wx641
+    appsecret: 452044
+    mch_id: 1521250771
+    key: Sjyyy012345678998765432100123456
+    notify_url: https://www.dingguangroup.com/prjectName/order/wxNotify
+    SIGNTYPE: MD5
+    TRADETYPE: JSAPI
+    pay_url: https://api.mch.weixin.qq.com/pay/unifiedorder
+    filePathPrefix: /usr/java/log/demo/
+    refund_url: https://api.mch.weixin.qq.com/secapi/pay/refund

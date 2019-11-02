@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dingguan.cheHengShi.trade.dao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.dingguan.cheHengShi.trade.entity.Order" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="actual_price" property="actualPrice" jdbcType="DECIMAL" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="detailed_address" property="detailedAddress" jdbcType="VARCHAR" />
+    <result column="integral" property="integral" jdbcType="INTEGER" />
+    <result column="manufacturer_banner" property="manufacturerBanner" jdbcType="VARCHAR" />
+    <result column="manufacturer_id" property="manufacturerId" jdbcType="VARCHAR" />
+    <result column="manufacturer_name" property="manufacturerName" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="order_time" property="orderTime" jdbcType="TIMESTAMP" />
+    <result column="order_type" property="orderType" jdbcType="VARCHAR" />
+    <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="postage" property="postage" jdbcType="DECIMAL" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+    <result column="crematorium" property="crematorium" jdbcType="VARCHAR" />
+    <result column="region" property="region" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, actual_price, area, city, detailed_address, integral, manufacturer_banner, manufacturer_id, 
+    manufacturer_name, `name`, open_id, order_time, order_type, pay_time, phone, postage,
+    province, remark, status, transaction_id, crematorium, region
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from `order`
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="findList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from `order`
+    where 1=1
+
+    <if test="openId!=null">
+      AND open_id=#{openId}
+    </if>
+
+    <if test="transactionid!=null">
+      AND transaction_id=#{transactionid}
+    </if>
+
+    <if test="status!=null">
+      AND ${status}
+    </if>
+
+    <if test="orderType!=null">
+      AND ${orderType}
+    </if>
+    <if test="manufacturerId!=null">
+      AND manufacturer_id=#{manufacturerId}
+    </if>
+
+    ORDER BY order_time DESC
+
+    <if test="pageNo!=null">
+      limit ${pageNo},${pageSize}
+    </if>
+  </select>
+
+
+
+  <select id="findCount" resultType="java.lang.Integer">
+    select
+    count(id)
+    from `order`
+    where 1=1
+
+    <if test="openId!=null">
+      AND open_id=#{openId}
+    </if>
+
+    <if test="transactionid!=null">
+      AND transaction_id=#{transactionid}
+    </if>
+
+    <if test="status!=null">
+      AND ${status}
+    </if>
+
+    <if test="orderType!=null">
+      AND ${orderType}
+    </if>
+    <if test="manufacturerId!=null">
+      AND manufacturer_id=#{manufacturerId}
+    </if>
+
+
+  </select>
+
+
+
+</mapper>
