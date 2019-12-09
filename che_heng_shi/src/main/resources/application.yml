@@ -19,7 +19,7 @@ spring:
          name: che_heng_shi
 #profile
     profiles:
-        active: uat
+        active: prod
 #datasource
     datasource:
         # druid
