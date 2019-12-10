@@ -20,7 +20,7 @@ public class PosterBannerController {
     @Autowired
     private PosterBannerService posterBannerService;
 
-    @ApiOperation(value = "查询要设置的banner图的内容")
+    @ApiOperation(value = "查询要设置的banner图的内容列表")
     @GetMapping("/list")
     public ApiResult<String> findListForBanner(
             @ApiParam("标题") @RequestParam(value = "title",required = false)String title,
@@ -40,14 +40,6 @@ public class PosterBannerController {
         return ApiResult.returnData(posterBanner);
     }
 
-    @ApiOperation(value = "获取 轮播图 列表")
-    @GetMapping()
-    public ApiResult<String> findList(
-            @ApiParam("标题") @RequestParam(value = "title",required = false)String title,
-            @ApiParam("轮播图类型") @RequestParam(value = "typeValue",required = false)String typeValue
-    ){
-        return ApiResult.returnData(posterBannerService.findList(typeValue,title));
-    }
 
     @ApiOperation(value = "新增 轮播图")
     @PostMapping(produces = "application/json;charset=utf-8")

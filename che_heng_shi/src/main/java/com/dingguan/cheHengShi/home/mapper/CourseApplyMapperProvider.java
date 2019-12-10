@@ -56,11 +56,35 @@ public class CourseApplyMapperProvider extends BaseMapperProvider {
     }
 
     public String selectVideo(String title){
-        StringBuffer sql = new StringBuffer("select id,title from video where 1=1");
+        StringBuffer sql = new StringBuffer("select id,title,'视频'typeName,'video' typeValue from video where 1=1");
         if(Util.isNotEmpty(title)){
             sql.append(" and title like  concat('%',#{title},'%') ");
         }
         return sql.toString();
     }
+
+    public String selectForFile(String title){
+        StringBuffer sql = new StringBuffer("select id,title,'资料'typeName,'file' typeValue from file where 1=1");
+        if(Util.isNotEmpty(title)){
+            sql.append(" and title like  concat('%',#{title},'%') ");
+        }
+        return sql.toString();
+    }
+
+    public String selectForJournalism(String title){
+        StringBuffer sql = new StringBuffer("select id,title,'新闻'typeName,'journalism' typeValue from journalism where 1=1");
+        if(Util.isNotEmpty(title)){
+            sql.append(" and title like  concat('%',#{title},'%') ");
+        }
+        return sql.toString();
+    }
+    public String selectForCourse(String title){
+        StringBuffer sql = new StringBuffer("select id,title,'课程'typeName,'course' typeValue from course where 1=1");
+        if(Util.isNotEmpty(title)){
+            sql.append(" and title like  concat('%',#{title},'%') ");
+        }
+        return sql.toString();
+    }
+
 
 }

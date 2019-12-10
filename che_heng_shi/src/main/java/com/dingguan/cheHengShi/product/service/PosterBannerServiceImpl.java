@@ -4,6 +4,7 @@ import com.dingguan.cheHengShi.common.exception.CustomException;
 import com.dingguan.cheHengShi.common.utils.DateUtil;
 import com.dingguan.cheHengShi.common.utils.Sequences;
 import com.dingguan.cheHengShi.common.utils.UpdateTool;
+import com.dingguan.cheHengShi.home.entity.CommonPoster;
 import com.dingguan.cheHengShi.home.mapper.VideoMapper;
 import com.dingguan.cheHengShi.product.entity.PosterBanner;
 import com.dingguan.cheHengShi.product.repository.PosterBannerRepository;
@@ -69,10 +70,19 @@ public class PosterBannerServiceImpl implements PosterBannerService {
     }
 
     @Override
-    public List<Map<String, String>> findListForBanner(String title, String typeValue) {
-        List<Map<String, String>> lists = null;
+    public List<CommonPoster> findListForBanner(String title, String typeValue) {
+        List<CommonPoster> lists = null;
         if("video".equals(typeValue)){
            lists = videoMapper.selectVideo(title);
+        }
+        if("file".equals(typeValue)){
+            lists = videoMapper.selectForFile(title);
+        }
+        if("journalism".equals(typeValue)){
+            lists = videoMapper.selectForJournalism(title);
+        }
+        if("course".equals(typeValue)){
+            lists = videoMapper.selectForCourse(title);
         }
         return lists;
     }
