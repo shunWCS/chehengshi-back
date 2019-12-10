@@ -54,4 +54,11 @@ public class PosterBanner {
     @Column(columnDefinition = "varchar(1000)   comment '备注说明'" ,name = "[remark]")
     private String remark;
 
+    @ApiModelProperty(value = "修改时间")
+    @Column(columnDefinition = "datetime   comment '修改时间'" ,name = "[edit_time]")
+    private String editTime;
+
+    @ApiModelProperty(value = "是否为首页轮播图1是，0否")
+    @Column(columnDefinition = "varchar(2)   comment '是否为首页轮播图1是，0否'" ,name = "[is_first]")
+    private String isFirst;
 }
