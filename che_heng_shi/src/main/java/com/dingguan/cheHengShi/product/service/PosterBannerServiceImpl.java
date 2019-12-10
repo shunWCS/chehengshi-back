@@ -4,6 +4,7 @@ import com.dingguan.cheHengShi.common.exception.CustomException;
 import com.dingguan.cheHengShi.common.utils.DateUtil;
 import com.dingguan.cheHengShi.common.utils.Sequences;
 import com.dingguan.cheHengShi.common.utils.UpdateTool;
+import com.dingguan.cheHengShi.home.mapper.VideoMapper;
 import com.dingguan.cheHengShi.product.entity.PosterBanner;
 import com.dingguan.cheHengShi.product.repository.PosterBannerRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -12,9 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PosterBannerServiceImpl implements PosterBannerService {
+
+    @Autowired
+    private VideoMapper videoMapper;
 
     @Autowired
     private PosterBannerRepository posterBannerRepository;
@@ -61,5 +66,14 @@ public class PosterBannerServiceImpl implements PosterBannerService {
         PosterBanner source = posterBannerRepository.findOne(posterBanner.getId());
         UpdateTool.copyNullProperties(source, posterBanner);
         return posterBannerRepository.save(posterBanner);
+    }
+
+    @Override
+    public List<Map<String, String>> findListForBanner(String title, String typeValue) {
+        List<Map<String, String>> lists = null;
+        if("video".equals(typeValue)){
+           lists = videoMapper.selectVideo(title);
+        }
+        return lists;
     }
 }

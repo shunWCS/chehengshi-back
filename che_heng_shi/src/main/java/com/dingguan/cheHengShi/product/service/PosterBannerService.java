@@ -4,6 +4,7 @@ import com.dingguan.cheHengShi.common.exception.CustomException;
 import com.dingguan.cheHengShi.product.entity.PosterBanner;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PosterBannerService {
     PosterBanner findByPrimaryKey(String id);
@@ -15,4 +16,6 @@ public interface PosterBannerService {
     void deleteByPrimaryKey(String id);
 
     PosterBanner updateByPrimaryKeySelective(PosterBanner posterBanner)throws CustomException;
+
+    List<Map<String, String>> findListForBanner(String title,String typeValue);
 }

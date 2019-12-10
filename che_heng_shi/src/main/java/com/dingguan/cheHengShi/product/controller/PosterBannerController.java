@@ -20,6 +20,15 @@ public class PosterBannerController {
     @Autowired
     private PosterBannerService posterBannerService;
 
+    @ApiOperation(value = "查询要设置的banner图的内容")
+    @GetMapping("/list")
+    public ApiResult<String> findListForBanner(
+            @ApiParam("标题") @RequestParam(value = "title",required = false)String title,
+            @ApiParam("轮播图类型") @RequestParam(value = "typeValue",required = false)String typeValue
+    ){
+        return ApiResult.returnData(posterBannerService.findListForBanner(typeValue,title));
+    }
+
     @GetMapping("/{id}")
     @ApiOperation(value = "根据 id 查询轮播图")
     @ApiImplicitParams({

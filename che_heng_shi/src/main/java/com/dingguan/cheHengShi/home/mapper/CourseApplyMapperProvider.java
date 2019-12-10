@@ -55,4 +55,12 @@ public class CourseApplyMapperProvider extends BaseMapperProvider {
         return sql.toString();
     }
 
+    public String selectVideo(String title){
+        StringBuffer sql = new StringBuffer("select id,title from video where 1=1");
+        if(Util.isNotEmpty(title)){
+            sql.append(" and title like  concat('%',#{title},'%') ");
+        }
+        return sql.toString();
+    }
+
 }
