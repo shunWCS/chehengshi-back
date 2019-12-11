@@ -62,6 +62,7 @@ public class CourseApplyMapperProvider extends BaseMapperProvider {
         if(Util.isNotEmpty(title)){
             sql.append(" and v.title like  concat('%',#{title},'%') ");
         }
+        sql.append(" order by pb.edit_time desc ");
         return sql.toString();
     }
 

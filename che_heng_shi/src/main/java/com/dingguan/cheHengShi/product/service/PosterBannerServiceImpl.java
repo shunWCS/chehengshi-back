@@ -91,11 +91,11 @@ public class PosterBannerServiceImpl implements PosterBannerService {
                 posterBanner.setId(Sequences.get());
             }
             posterBanner.setCreateTime(DateUtil.getFormatDateTime(new Date(),DateUtil.fullFormat));
-            insert = posterBannerMapper.insert(posterBanner);
+            PosterBanner save = posterBannerRepository.save(posterBanner);
         }else {
             //如果不为空那么做修改操作
             UpdateTool.copyNullProperties(source, posterBanner);
-            update = posterBannerMapper.updateByPrimaryKey(posterBanner);
+            PosterBanner save = posterBannerRepository.save(posterBanner);
         }
         return insert + update;
     }
