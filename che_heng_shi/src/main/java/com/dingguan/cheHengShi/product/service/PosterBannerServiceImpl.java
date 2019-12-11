@@ -4,9 +4,11 @@ import com.dingguan.cheHengShi.common.exception.CustomException;
 import com.dingguan.cheHengShi.common.utils.DateUtil;
 import com.dingguan.cheHengShi.common.utils.Sequences;
 import com.dingguan.cheHengShi.common.utils.UpdateTool;
+import com.dingguan.cheHengShi.common.utils.Util;
 import com.dingguan.cheHengShi.home.entity.CommonPoster;
 import com.dingguan.cheHengShi.home.mapper.VideoMapper;
 import com.dingguan.cheHengShi.product.entity.PosterBanner;
+import com.dingguan.cheHengShi.product.mapper.PosterBannerMapper;
 import com.dingguan.cheHengShi.product.repository.PosterBannerRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +25,27 @@ public class PosterBannerServiceImpl implements PosterBannerService {
     private VideoMapper videoMapper;
 
     @Autowired
+    private PosterBannerMapper posterBannerMapper;
+
+    @Autowired
     private PosterBannerRepository posterBannerRepository;
 
     @Override
-    public PosterBanner findByPrimaryKey(String id) {
-        PosterBanner posterBanner = posterBannerRepository.findOne(id);
-        return posterBanner;
+    public PosterBanner selectPosterBannerByRefId(String refId,String typeValue) {
+        String[] typeValues = refId.split(",");
+        String tempRefId = typeValues[0];
+        typeValue = typeValues[1];
+        PosterBanner posterBanner = posterBannerMapper.selectPosterBannerByRefId(tempRefId);
+        //如果为空，这个回显是新增的时候回显
+        if(Util.isEmpty(posterBanner)){
+            posterBanner= new PosterBanner();
+            posterBanner.setRefId(tempRefId);
+            posterBanner.setTypeValue(typeValue);
+            return posterBanner;
+        }else {
+            //这个时修改的时候回显
+            return posterBanner;
+        }
     }
 
     @Override
@@ -58,20 +75,38 @@ public class PosterBannerServiceImpl implements PosterBannerService {
     }
 
     @Override
-    public void deleteByPrimaryKey(String id) {
-        posterBannerRepository.delete(id);
+    public void deletePosterBannerByRefId(String refId) {
+        Integer integer = posterBannerMapper.deletePosterBannerByRefId(refId);
     }
 
     @Override
-    public PosterBanner updateByPrimaryKeySelective(PosterBanner posterBanner) throws CustomException {
-        PosterBanner source = posterBannerRepository.findOne(posterBanner.getId());
-        UpdateTool.copyNullProperties(source, posterBanner);
-        return posterBannerRepository.save(posterBanner);
+    public Integer updateByPrimaryKeySelective(PosterBanner posterBanner) throws CustomException {
+        //PosterBanner source = posterBannerRepository.findOne(posterBanner.getId());
+        PosterBanner source = posterBannerMapper.selectPosterBannerByRefId(posterBanner.getRefId());
+        Integer insert = 0;
+        Integer update = 0;
+        //如果为空那么做新增操作
+        if(Util.isEmpty(source)){
+            if(StringUtils.isBlank(posterBanner.getId())){
+                posterBanner.setId(Sequences.get());
+            }
+            posterBanner.setCreateTime(DateUtil.getFormatDateTime(new Date(),DateUtil.fullFormat));
+            insert = posterBannerMapper.insert(posterBanner);
+        }else {
+            //如果不为空那么做修改操作
+            UpdateTool.copyNullProperties(source, posterBanner);
+            update = posterBannerMapper.updateByPrimaryKey(posterBanner);
+        }
+        return insert + update;
     }
 
     @Override
-    public List<CommonPoster> findListForBanner(String title, String typeValue) {
+    public List<CommonPoster> findListForBanner(String typeValue, String title) {
         List<CommonPoster> lists = null;
+        //如果typeValue为空那么列表默认显示视频的数据
+        if(Util.isEmpty(typeValue)){
+            lists = videoMapper.selectVideo(title);
+        }
         if("video".equals(typeValue)){
            lists = videoMapper.selectVideo(title);
         }
@@ -83,6 +118,9 @@ public class PosterBannerServiceImpl implements PosterBannerService {
         }
         if("course".equals(typeValue)){
             lists = videoMapper.selectForCourse(title);
+        }
+        if("store".equals(typeValue)){
+            lists = videoMapper.selectForProduct(title);
         }
         return lists;
     }

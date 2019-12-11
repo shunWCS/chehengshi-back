@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.Map;
 
 public interface PosterBannerService {
-    PosterBanner findByPrimaryKey(String id);
+    PosterBanner selectPosterBannerByRefId(String id,String typeValue);
 
     List<PosterBanner> findList(String typeValue, String title);
 
     PosterBanner insertSelective(PosterBanner posterBanner);
 
-    void deleteByPrimaryKey(String id);
+    void deletePosterBannerByRefId(String id);
 
-    PosterBanner updateByPrimaryKeySelective(PosterBanner posterBanner)throws CustomException;
+    Integer updateByPrimaryKeySelective(PosterBanner posterBanner)throws CustomException;
 
-    List<CommonPoster> findListForBanner(String title, String typeValue);
+    List<CommonPoster> findListForBanner(String typeValue, String title);
 }

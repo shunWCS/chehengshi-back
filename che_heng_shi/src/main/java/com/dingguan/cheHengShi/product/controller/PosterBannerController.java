@@ -21,7 +21,7 @@ public class PosterBannerController {
     private PosterBannerService posterBannerService;
 
     @ApiOperation(value = "查询要设置的banner图的内容列表")
-    @GetMapping("/list")
+    @GetMapping()
     public ApiResult<String> findListForBanner(
             @ApiParam("标题") @RequestParam(value = "title",required = false)String title,
             @ApiParam("轮播图类型") @RequestParam(value = "typeValue",required = false)String typeValue
@@ -29,14 +29,15 @@ public class PosterBannerController {
         return ApiResult.returnData(posterBannerService.findListForBanner(typeValue,title));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{refId}")
     @ApiOperation(value = "根据 id 查询轮播图")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "轮播图Id", paramType = "path", dataType = "String",required = true)
+            @ApiImplicitParam(name = "refId", value = "轮播图关联Id", paramType = "path", dataType = "String",required = true),
+            @ApiImplicitParam(name="typeValue",value="轮播图类型",required=true,paramType="query")
     })
-    public ApiResult<PosterBanner> findById(@PathVariable String id){
-        log.info(MessageFormat.format("查看轮播图详情========================>：id:{1}",id));
-        PosterBanner posterBanner = posterBannerService.findByPrimaryKey(id);
+    public ApiResult<PosterBanner> findById(@PathVariable String refId,String typeValue){
+        log.info(MessageFormat.format("查看轮播图详情========================>：id:{1}",refId));
+        PosterBanner posterBanner = posterBannerService.selectPosterBannerByRefId(refId,typeValue);
         return ApiResult.returnData(posterBanner);
     }
 
@@ -50,10 +51,10 @@ public class PosterBannerController {
     }
 
     @ApiOperation(value = "删除 轮播图")
-    @DeleteMapping("/{id}")
-    @ApiImplicitParam(name = "id", value = "id", paramType = "path", dataType = "String")
-    public ApiResult<String> deleteById(@PathVariable String id){
-        posterBannerService.deleteByPrimaryKey(id);
+    @DeleteMapping("/{refId}")
+    @ApiImplicitParam(name = "refId", value = "refId", paramType = "path", dataType = "String")
+    public ApiResult<String> deleteById(@PathVariable String refId){
+        posterBannerService.deletePosterBannerByRefId(refId);
         return ApiResult.returnData(null);
     }
 
@@ -61,8 +62,8 @@ public class PosterBannerController {
     @PutMapping("")
     @ApiImplicitParam(name = "posterBanner", value = "", paramType = "body", dataType = "PosterBanner")
     public ApiResult<String> put(@RequestBody PosterBanner posterBanner, @ModelAttribute PosterBanner model) throws CustomException{
-        PosterBanner posterBanner1 = posterBannerService.updateByPrimaryKeySelective(posterBanner);
-        ApiResult result = ApiResult.returnData(posterBanner1);
+        Integer count = posterBannerService.updateByPrimaryKeySelective(posterBanner);
+        ApiResult result = ApiResult.returnData(count);
         return result;
     }
 

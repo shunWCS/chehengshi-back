@@ -56,32 +56,50 @@ public class CourseApplyMapperProvider extends BaseMapperProvider {
     }
 
     public String selectVideo(String title){
-        StringBuffer sql = new StringBuffer("select id,title,'视频'typeName,'video' typeValue from video where 1=1");
+        StringBuffer sql = new StringBuffer("SELECT v.id refId,v.title,'视频' typeName,'video' typeValue,pb.create_time createTime,\n" +
+                "pb.edit_time editTime,pb.is_first isFirst FROM video v\n" +
+                "LEFT JOIN poster_banner pb ON v.id = pb.ref_id WHERE 1 =1\n");
         if(Util.isNotEmpty(title)){
-            sql.append(" and title like  concat('%',#{title},'%') ");
+            sql.append(" and v.title like  concat('%',#{title},'%') ");
         }
         return sql.toString();
     }
 
     public String selectForFile(String title){
-        StringBuffer sql = new StringBuffer("select id,title,'资料'typeName,'file' typeValue from file where 1=1");
+        StringBuffer sql = new StringBuffer("SELECT f.id refId,f.title,'资料' typeName,'file' typeValue,pb.create_time createTime,\n" +
+                "pb.edit_time editTime,pb.is_first isFirst FROM file f\n" +
+                "LEFT JOIN poster_banner pb ON f.id = pb.ref_id WHERE 1 =1");
         if(Util.isNotEmpty(title)){
-            sql.append(" and title like  concat('%',#{title},'%') ");
+            sql.append(" and f.title like  concat('%',#{title},'%') ");
         }
         return sql.toString();
     }
 
     public String selectForJournalism(String title){
-        StringBuffer sql = new StringBuffer("select id,title,'新闻'typeName,'journalism' typeValue from journalism where 1=1");
+        StringBuffer sql = new StringBuffer("SELECT j.id refId,j.title,'新闻' typeName,'journalism' typeValue,pb.create_time createTime,\n" +
+                "pb.edit_time editTime,pb.is_first isFirst FROM journalism j\n" +
+                "LEFT JOIN poster_banner pb ON j.id = pb.ref_id WHERE 1 =1");
         if(Util.isNotEmpty(title)){
-            sql.append(" and title like  concat('%',#{title},'%') ");
+            sql.append(" and j.title like  concat('%',#{title},'%') ");
         }
         return sql.toString();
     }
     public String selectForCourse(String title){
-        StringBuffer sql = new StringBuffer("select id,title,'课程'typeName,'course' typeValue from course where 1=1");
+        StringBuffer sql = new StringBuffer("SELECT c.id refId,c.title,'课程' typeName,'course' typeValue,pb.create_time createTime,\n" +
+                "pb.edit_time editTime,pb.is_first isFirst FROM course c\n" +
+                "LEFT JOIN poster_banner pb ON c.id = pb.ref_id WHERE 1 =1");
         if(Util.isNotEmpty(title)){
-            sql.append(" and title like  concat('%',#{title},'%') ");
+            sql.append(" and c.title like  concat('%',#{title},'%') ");
+        }
+        return sql.toString();
+    }
+
+    public String selectForProduct(String title){
+        StringBuffer sql = new StringBuffer("SELECT pt.id refId,pt.type_name title,'商城' typeName,'store' typeValue,pb.create_time createTime,\n" +
+                "pb.edit_time editTime,pb.is_first isFirst FROM product_type pt\n" +
+                "LEFT JOIN poster_banner pb ON pt.id = pb.ref_id WHERE 1 =1");
+        if(Util.isNotEmpty(title)){
+            sql.append(" and pt.type_name like  concat('%',#{title},'%') ");
         }
         return sql.toString();
     }

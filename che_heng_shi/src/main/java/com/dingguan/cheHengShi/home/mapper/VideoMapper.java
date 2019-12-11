@@ -23,4 +23,7 @@ public interface VideoMapper extends MyMapper<Video> {
 
     @SelectProvider(type = CourseApplyMapperProvider.class,method = "selectForCourse")
     List<CommonPoster> selectForCourse(String title);
+
+    @SelectProvider(type = CourseApplyMapperProvider.class,method = "selectForProduct")
+    List<CommonPoster> selectForProduct(String title);
 }
