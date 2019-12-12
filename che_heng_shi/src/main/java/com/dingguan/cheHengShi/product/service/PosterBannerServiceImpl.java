@@ -31,8 +31,8 @@ public class PosterBannerServiceImpl implements PosterBannerService {
     private PosterBannerRepository posterBannerRepository;
 
     @Override
-    public PosterBanner selectPosterBannerByRefId(String refId,String typeValue) {
-        String[] typeValues = refId.split(",");
+    public PosterBanner selectPosterBannerByRefId(String id,String typeValue) {
+        String[] typeValues = id.split(",");
         String tempRefId = typeValues[0];
         typeValue = typeValues[1];
         PosterBanner posterBanner = posterBannerMapper.selectPosterBannerByRefIdAndType(tempRefId,typeValue);

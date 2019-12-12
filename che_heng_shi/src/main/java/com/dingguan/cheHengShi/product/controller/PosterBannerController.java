@@ -39,15 +39,15 @@ public class PosterBannerController {
         return result;
     }
 
-    @GetMapping("/{refId}")
+    @GetMapping("/{id}")
     @ApiOperation(value = "根据 id 查询轮播图")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "refId", value = "轮播图关联Id", paramType = "path", dataType = "String",required = true),
+            @ApiImplicitParam(name = "id", value = "轮播图关联Id", paramType = "path", dataType = "String",required = true),
             @ApiImplicitParam(name="typeValue",value="轮播图类型",required=true,paramType="query")
     })
-    public ApiResult<PosterBanner> findById(@PathVariable String refId,String typeValue){
-        log.info(MessageFormat.format("查看轮播图详情========================>：id:{1}",refId));
-        PosterBanner posterBanner = posterBannerService.selectPosterBannerByRefId(refId,typeValue);
+    public ApiResult<PosterBanner> findById(@PathVariable String id,String typeValue){
+        log.info(MessageFormat.format("查看轮播图详情========================>：id:{0}",id));
+        PosterBanner posterBanner = posterBannerService.selectPosterBannerByRefId(id,typeValue);
         return ApiResult.returnData(posterBanner);
     }
 

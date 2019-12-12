@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 @ApiModel(description = "轮播图设置列表")
 public class CommonPoster {
-
+    @ApiModelProperty(value = "主键ID")
+    private String id;
     @ApiModelProperty(value = "关联编号")
     private String refId;
     @ApiModelProperty(value = "中文类型")
