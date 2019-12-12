@@ -23,5 +23,5 @@ public class CommonPoster {
     @ApiModelProperty(value = "是否为首页轮播图 1是，0否")
     private String isFirst;
     @ApiModelProperty(value = "轮播图地址")
-    private String bannerUrl;
+    private String banner;
 }

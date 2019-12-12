@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PosterBannerServiceImpl implements PosterBannerService {
@@ -35,17 +34,8 @@ public class PosterBannerServiceImpl implements PosterBannerService {
         String[] typeValues = refId.split(",");
         String tempRefId = typeValues[0];
         typeValue = typeValues[1];
-        PosterBanner posterBanner = posterBannerMapper.selectPosterBannerByRefId(tempRefId);
-        //如果为空，这个回显是新增的时候回显
-        if(Util.isEmpty(posterBanner)){
-            posterBanner= new PosterBanner();
-            posterBanner.setRefId(tempRefId);
-            posterBanner.setTypeValue(typeValue);
-            return posterBanner;
-        }else {
-            //这个时修改的时候回显
-            return posterBanner;
-        }
+        PosterBanner posterBanner = posterBannerMapper.selectPosterBannerByRefIdAndType(tempRefId,typeValue);
+        return posterBanner;
     }
 
     @Override
@@ -70,6 +60,7 @@ public class PosterBannerServiceImpl implements PosterBannerService {
             posterBanner.setId(Sequences.get());
         }
         posterBanner.setCreateTime(DateUtil.getFormatDateTime(new Date(),DateUtil.fullFormat));
+        posterBanner.setEditTime(DateUtil.getFormatDateTime(new Date(),DateUtil.fullFormat));
         PosterBanner save = posterBannerRepository.save(posterBanner);
         return save;
     }
@@ -80,47 +71,40 @@ public class PosterBannerServiceImpl implements PosterBannerService {
     }
 
     @Override
-    public Integer updateByPrimaryKeySelective(PosterBanner posterBanner) throws CustomException {
-        //PosterBanner source = posterBannerRepository.findOne(posterBanner.getId());
+    public PosterBanner updateByPrimaryKeySelective(PosterBanner posterBanner) throws CustomException {
         PosterBanner source = posterBannerMapper.selectPosterBannerByRefId(posterBanner.getRefId());
-        Integer insert = 0;
-        Integer update = 0;
-        //如果为空那么做新增操作
         if(Util.isEmpty(source)){
-            if(StringUtils.isBlank(posterBanner.getId())){
-                posterBanner.setId(Sequences.get());
-            }
-            posterBanner.setCreateTime(DateUtil.getFormatDateTime(new Date(),DateUtil.fullFormat));
-            PosterBanner save = posterBannerRepository.save(posterBanner);
-        }else {
-            //如果不为空那么做修改操作
-            UpdateTool.copyNullProperties(source, posterBanner);
-            PosterBanner save = posterBannerRepository.save(posterBanner);
+            throw new RuntimeException("该数据不存在!");
         }
-        return insert + update;
+        UpdateTool.copyNullProperties(source, posterBanner);
+        posterBanner.setEditTime(DateUtil.getFormatDateTime(new Date(),DateUtil.fullFormat));
+        PosterBanner posterBanner1 = posterBannerRepository.save(posterBanner);
+        return posterBanner1;
     }
 
     @Override
     public List<CommonPoster> findListForBanner(String typeValue, String title) {
+        List<CommonPoster> lists = posterBannerMapper.selectCommonPosterByTypeValue(typeValue);
+        return lists;
+    }
+
+    @Override
+    public List<CommonPoster> findListForPullList(String typeValue) {
         List<CommonPoster> lists = null;
-        //如果typeValue为空那么列表默认显示视频的数据
-        if(Util.isEmpty(typeValue)){
-            lists = videoMapper.selectVideo(title);
-        }
         if("video".equals(typeValue)){
-           lists = videoMapper.selectVideo(title);
+            lists = videoMapper.selectVideoForPull();
         }
         if("file".equals(typeValue)){
-            lists = videoMapper.selectForFile(title);
+            lists = videoMapper.selectForFilePull();
         }
         if("journalism".equals(typeValue)){
-            lists = videoMapper.selectForJournalism(title);
+            lists = videoMapper.selectForJournalismPull();
         }
         if("course".equals(typeValue)){
-            lists = videoMapper.selectForCourse(title);
+            lists = videoMapper.selectForCoursePull();
         }
         if("store".equals(typeValue)){
-            lists = videoMapper.selectForProduct(title);
+            lists = videoMapper.selectForProductPull();
         }
         return lists;
     }

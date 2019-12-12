@@ -16,7 +16,9 @@ public interface PosterBannerService {
 
     void deletePosterBannerByRefId(String id);
 
-    Integer updateByPrimaryKeySelective(PosterBanner posterBanner)throws CustomException;
+    PosterBanner updateByPrimaryKeySelective(PosterBanner posterBanner)throws CustomException;
 
     List<CommonPoster> findListForBanner(String typeValue, String title);
+
+    List<CommonPoster> findListForPullList(String typeValue);
 }
