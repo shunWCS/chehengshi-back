@@ -12,6 +12,8 @@ import com.dingguan.cheHengShi.home.dto.*;
 import com.dingguan.cheHengShi.home.entity.ProductPoster;
 import com.dingguan.cheHengShi.home.service.HomeService;
 import com.dingguan.cheHengShi.material.entity.Material;
+import com.dingguan.cheHengShi.product.entity.PosterBanner;
+import com.dingguan.cheHengShi.product.service.PosterBannerService;
 import com.dingguan.cheHengShi.user.entity.User;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
@@ -44,6 +46,9 @@ public class HomeController {
     private HomeService homeService;
 
     @Autowired
+    private PosterBannerService posterBannerService;
+
+    @Autowired
     private Parameters parameters;
 
     @GetMapping("/home/poster")
@@ -54,6 +59,22 @@ public class HomeController {
         return result;
     }
 
+    @GetMapping("/get/photo")
+    @ApiOperation(value="获取首页轮播图")
+    public ApiResult<List<PosterBanner>> getPosterBanner(){
+        List<PosterBanner> bannerList = posterBannerService.getHomePhoto();
+        ApiResult result = ApiResult.returnData(bannerList);
+        return result;
+    }
+
+    @GetMapping("/get/images")
+    @ApiOperation(value="获取非首页轮播图")
+    @ApiImplicitParam(name="type",value="轮播图类型(0视频，1文档，2新闻，3课程，4商城)",required=true,paramType="query")
+    public ApiResult<List<PosterBanner>> getPosterBanner(Integer type){
+        List<PosterBanner> bannerList = posterBannerService.getImages(type);
+        ApiResult result = ApiResult.returnData(bannerList);
+        return result;
+    }
 
     @GetMapping("/home/list")
     @ApiOperation(value="小程序首页列表(包括新闻、文档、视频)(热门推介)")

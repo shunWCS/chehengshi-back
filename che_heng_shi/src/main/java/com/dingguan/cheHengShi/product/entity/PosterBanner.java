@@ -38,9 +38,9 @@ public class PosterBanner {
     @Column(columnDefinition = "varchar(30) comment '关联ID'" ,name = "[ref_id]")
     private String refId;
 
-    @NotBlank(message = "轮播类型ID不能为空")
-    @ApiModelProperty(value = "轮播类型ID")
-    @Column(columnDefinition = "varchar(30) comment '轮播类型ID'" ,name = "[type_value]")
+    @NotBlank(message = "轮播类型不能为空")
+    @ApiModelProperty(value = "轮播类型英文")
+    @Column(columnDefinition = "varchar(30) comment '轮播类型'" ,name = "[type_value]")
     private String typeValue;
 
     @ApiModelProperty(value = "创建时间")
@@ -58,4 +58,8 @@ public class PosterBanner {
     @ApiModelProperty(value = "是否为首页轮播图1是，0否")
     @Column(columnDefinition = "varchar(2)   comment '是否为首页轮播图1是，0否'" ,name = "[is_first]")
     private String isFirst;
+
+    @ApiModelProperty(value = "轮播类型中文")
+    @Transient
+    private String typeName;
 }

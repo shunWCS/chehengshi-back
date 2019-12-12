@@ -21,4 +21,8 @@ public interface PosterBannerService {
     List<CommonPoster> findListForBanner(String typeValue, String title);
 
     List<CommonPoster> findListForPullList(String typeValue);
+
+    List<PosterBanner> getHomePhoto();
+
+    List<PosterBanner> getImages(Integer type);
 }

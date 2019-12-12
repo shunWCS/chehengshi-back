@@ -21,4 +21,10 @@ public interface PosterBannerMapper extends MyMapper<PosterBanner> {
 
     @SelectProvider(type = PosterBannerMapperProvider.class,method = "selectCommonPosterByTypeValue")
     List<CommonPoster> selectCommonPosterByTypeValue(String typeValue);
+
+    @SelectProvider(type = PosterBannerMapperProvider.class,method = "getHomePhoto")
+    List<PosterBanner> getHomePhoto(String isFirst);
+
+    @SelectProvider(type = PosterBannerMapperProvider.class,method = "getImages")
+    List<PosterBanner> getImages(String type);
 }

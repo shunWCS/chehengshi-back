@@ -18,4 +18,18 @@ public class PosterBannerMapperProvider extends BaseMapperProvider {
         return sql.toString();
     }
 
+    public String getHomePhoto(String isFirst){
+        StringBuffer sql = new StringBuffer("select pb.*,");
+        sql.append(enumToCaseWhenString(BannerTypeEnum.class,"type_value","","typeName"));
+        sql.append(" from poster_banner pb where pb.is_first = #{isFirst} ORDER BY edit_time DESC limit 0,4");
+        return sql.toString();
+    }
+
+    public String getImages(String type){
+        StringBuffer sql = new StringBuffer("select pb.*,");
+        sql.append(enumToCaseWhenString(BannerTypeEnum.class,"type_value","","typeName"));
+        sql.append(" from poster_banner pb where pb.type_value = #{type} ORDER BY edit_time DESC limit 0,4");
+        return sql.toString();
+    }
+
 }

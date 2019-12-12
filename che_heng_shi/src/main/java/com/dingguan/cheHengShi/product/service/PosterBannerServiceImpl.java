@@ -6,6 +6,7 @@ import com.dingguan.cheHengShi.common.utils.Sequences;
 import com.dingguan.cheHengShi.common.utils.UpdateTool;
 import com.dingguan.cheHengShi.common.utils.Util;
 import com.dingguan.cheHengShi.home.entity.CommonPoster;
+import com.dingguan.cheHengShi.home.enumerate.IsFirstEnum;
 import com.dingguan.cheHengShi.home.mapper.VideoMapper;
 import com.dingguan.cheHengShi.product.entity.PosterBanner;
 import com.dingguan.cheHengShi.product.mapper.PosterBannerMapper;
@@ -107,5 +108,33 @@ public class PosterBannerServiceImpl implements PosterBannerService {
             lists = videoMapper.selectForProductPull();
         }
         return lists;
+    }
+
+    @Override
+    public List<PosterBanner> getHomePhoto() {
+        List<PosterBanner> homePhotos = posterBannerMapper.getHomePhoto(IsFirstEnum.YES.getCode());
+        return homePhotos;
+    }
+
+    @Override
+    public List<PosterBanner> getImages(Integer type) {
+        String typeValue = null;
+        if(type == 0){
+            typeValue = "video";
+        }
+        if(type == 1){
+            typeValue = "file";
+        }
+        if(type == 2){
+            typeValue = "journalism";
+        }
+        if(type == 3){
+            typeValue = "course";
+        }
+        if(type == 4){
+            typeValue = "store";
+        }
+        List<PosterBanner> images = posterBannerMapper.getImages(typeValue);
+        return images;
     }
 }
